@@ -201,7 +201,8 @@ interface AddCommentPayload {
 export const useAddCommentMutation = (
     options?: UseMutationOptions<
         IComment, // Expected successful response data type
-        AxiosError<ApiErrorStructure> // Variables type
+        AxiosError<ApiErrorStructure>, // Variables type
+        AddCommentPayload
     >
 ) => {
     const queryClient = useQueryClient();
@@ -232,7 +233,8 @@ export const useAddCommentMutation = (
              // --- Use the backend's error message if available ---
             // const errorMessage = error.response?.data?.message || error.message || `Failed to add comment to video ${videoId}`;
             // Handle error display in UI using errorMessage
-        }
+        },
+        ...options
     });
 };
 
@@ -288,7 +290,7 @@ interface DeleteCommentPayload {
 
 // Define the success response type (can be void or an object with deleted ID)
 interface DeleteCommentSuccessResponse {
-    deletedCommentId: string;
+    commentId: string;
 }
 
 export const useDeleteCommentMutation = (
@@ -306,7 +308,7 @@ export const useDeleteCommentMutation = (
             const response = await api.delete(`/videos/comments/${commentId}`);
             return response.data.data; // Assuming your backend returns a success APIResponse with data: { deletedCommentId: string }
         },
-        onSuccess: (data, { commentId }) => {
+        onSuccess: ({ commentId }) => {
             // Invalidate relevant queries
             // Invalidate the specific comment and the list of comments for the video
             queryClient.invalidateQueries({ queryKey: ['comment', commentId] });
@@ -330,7 +332,7 @@ export const useDeleteCommentMutation = (
         },
         onError: (error, { commentId }) => {
             console.error(`Failed to delete comment ${commentId}:`, error.response?.data || error.message);
-            const errorMessage = error.response?.data?.message || error.message || `Failed to delete comment ${commentId}`;
+            // const errorMessage = error.response?.data?.message || error.message || `Failed to delete comment ${commentId}`;
             // Handle error display in UI using errorMessage
         },
         ...options, // Spread any provided options
