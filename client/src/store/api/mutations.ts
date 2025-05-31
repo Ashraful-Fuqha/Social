@@ -199,10 +199,10 @@ interface AddCommentPayload {
     content: string;
 }
 export const useAddCommentMutation = (
-    // options?: UseMutationOptions<
-    //     IComment, // Expected successful response data type
-    //     AxiosError<ApiErrorStructure> // Variables type
-    // >
+    options?: UseMutationOptions<
+        IComment, // Expected successful response data type
+        AxiosError<ApiErrorStructure> // Variables type
+    >
 ) => {
     const queryClient = useQueryClient();
 
