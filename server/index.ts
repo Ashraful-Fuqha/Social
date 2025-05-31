@@ -18,6 +18,27 @@ const corsOptions = {
     credentials: true 
 }
 
+import fs from 'fs/promises'; // Use fs/promises for async operations
+import path from 'path';
+
+// ... other imports and app setup ...
+
+const tempUploadDir = path.join(process.cwd(), 'public', 'temp');
+
+async function ensureUploadDirectory() {
+  try {
+    await fs.mkdir(tempUploadDir, { recursive: true });
+    // console.log(`Ensured upload directory exists: ${tempUploadDir}`);
+  } catch (error) {
+    console.error(`Failed to create upload directory ${tempUploadDir}:`, error);
+    // Depending on criticality, you might want to exit or log a warning
+    process.exit(1); // Exit if this is a fatal error
+  }
+}
+
+// Call this at the start of your application
+ensureUploadDirectory();
+
 app.use(cors(corsOptions))
 
 
