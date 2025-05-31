@@ -2,13 +2,17 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from "cors"
 import { connectDB } from './src/db/dbconnect';
-const app = express();
+
 dotenv.config({
     path: '.env'
 })
+connectDB()
+
+const app = express();
+
 
 const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: process.env.CORS_ORIGIN ,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], 
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'], 
     credentials: true 
@@ -16,7 +20,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions))
 
-connectDB()
 
 import { v2 as cloudinary } from 'cloudinary';
 
@@ -45,8 +48,8 @@ import userRoutes from './src/routes/UserRoutes';
 import videoRoutes from './src/routes/VideoRoutes';
 import playlistRoutes from './src/routes/PlaylistsRoute';
 
-// --- Use Routers ---
-// Prefix API routes with /api/v1
+    // --- Use Routers ---
+    // Prefix API routes with /api/v1
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/videos', videoRoutes);
 app.use('/api/v1/playlists', playlistRoutes);

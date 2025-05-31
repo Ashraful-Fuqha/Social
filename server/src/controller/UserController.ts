@@ -6,7 +6,7 @@ import { IAuthRequest } from '../middlewares/AuthMiddleware';
 import { asyncHandler } from '../utils/asyncHandler';
 import { APIResponse } from '../utils/APIResponse';
 import { ApiError } from '../utils/APIError';
-import clerkClient from '@clerk/clerk-sdk-node';
+import { clerkClient } from '@clerk/express';
 import Video from '../models/VideoSchema';
 
 export const findOrCreateUser = asyncHandler(async (req: IAuthRequest, res: Response, next: NextFunction): Promise<void> => {
